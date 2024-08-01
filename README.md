@@ -1,4 +1,4 @@
-# entelligence-interview
+# demo
 
 ## Get Started
 Login into your AWS account and generate AWS credentials. Then configure your AWS CLI with:
