@@ -45,7 +45,7 @@ Default output format [None]: json
   - `aws --profile dev-user-1 s3 ls s3://dev-infra-${random_string}`
     - This should fail
   - `aws --profile dev-user-1 s3 ls s3://stage-ecommerce-${random_string}`
-    - This should fail initially. To test it works, update the variable `stage_access_after` to a value that is prior to today's date and re-run the terraform. Then re-run the `aws` command for the bucket.
+    - This should fail
   - `aws --profile dev-user-1 s3 ls s3://stage-neteng-${random_string}`
     - This should fail
   - `aws --profile dev-user-1 s3 ls s3://prod-ecommerce-${random_string}`
