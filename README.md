@@ -1,5 +1,8 @@
 # demo
 
+## Diagram
+![alt text](diagram.png "Diagram")
+
 ## Get Started
 
 Here are instructions on installing AWS CLI: https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
@@ -55,5 +58,3 @@ Default output format [None]: json
 terraform destroy
 ```
 
-## Diagram
-![alt text](diagram.png "Diagram")
