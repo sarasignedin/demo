@@ -1,7 +1,7 @@
 # demo
 
 ## Diagram
-![alt text](diagram.png "Diagram")
+![alt text](diagram1.png "Diagram")
 
 ## Get Started
 
