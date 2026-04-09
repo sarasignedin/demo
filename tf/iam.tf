@@ -20,49 +20,37 @@ resource "aws_iam_group_policy" "dev_ecommerce" {
     Version = "2012-10-17"
     Statement = [
       {
+        Sid    = "DevEcommerceAccess"
         Effect = "Allow"
         Action = [
           "s3:GetObject",
           "s3:PutObject",
           "s3:ListBucket"
         ]
-        Resource = [
-          "*"
-        ]
+        Resource = ["*"]
         Condition = {
           StringEquals = {
-            "aws:ResourceTag/env" : "dev",
-          }
-        }
-        Condition = {
-          StringEquals = {
-            "aws:ResourceTag/team" : "ecommerce"
+            "aws:ResourceTag/env"  = "dev"
+            "aws:ResourceTag/team" = "ecommerce"
           }
         }
       },
       {
+        Sid    = "StageEcommerceAccessAfter6Months"
         Effect = "Allow"
         Action = [
           "s3:GetObject",
           "s3:PutObject",
           "s3:ListBucket"
         ]
-        Resource = [
-          "*"
-        ]
+        Resource = ["*"]
         Condition = {
           StringEquals = {
-            "aws:ResourceTag/env" : "stage"
+            "aws:ResourceTag/env"  = "stage"
+            "aws:ResourceTag/team" = "ecommerce"
           }
-        }
-        Condition= {
-          StringEquals = {
-            "aws:ResourceTag/team" : "ecommerce"
-          }
-        }
-        Condition = {
           DateGreaterThan = {
-            "aws:CurrentTime" : "${var.stage_access_after}"
+            "aws:CurrentTime" = "${var.stage_access_after}"
           }
         }
       }
