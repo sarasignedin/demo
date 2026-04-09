@@ -32,7 +32,7 @@ The TF code does the following:
 - Creates the new user `dev-user-1`.
 - Provisions the IAM group and policy to meet the following conditions:
   - Initially the developer should be able to have read/write access to ecommerce objects in dev, but after 6 months of their hire date, the developer should be granted the same rights to the stage environment.
-  - Assume start date of October 1, 2026
+  - Assume start date of April 1, 2026
 - Adds user to the IAM group
 
 **Step 1** — Run Terraform:
