@@ -22,6 +22,11 @@ You will need an AWS IAM user with `AdministratorAccess` configured as a named p
 
 ```sh
 export AWS_PROFILE=sara
+```
+
+Verify it works:
+
+```sh
 aws sts get-caller-identity
 ```
 
@@ -35,30 +40,45 @@ The TF code does the following:
   - Assume start date of April 1, 2026
 - Adds user to the IAM group
 
-**Step 1** — Run Terraform:
+**Step 1** — Move into the tf directory:
 ```sh
 cd tf/
+```
+
+**Step 2** — Initialize Terraform (downloads provider plugins):
+```sh
 terraform init
+```
+
+**Step 3** — Preview what will be created:
+```sh
+terraform plan
+```
+
+Review the output to confirm resources will be added before proceeding. A clean apply will show 19 to add.
+
+**Step 4** — Apply:
+```sh
 terraform apply -auto-approve
 ```
 
-**Step 2** — Save your bucket suffix. Look at the apply output for any bucket name, e.g. `dev-ecommerce-16145140695839611247`. The number at the end is your suffix. Set it as a shell variable — run this command on its own line:
+**Step 5** — Save your bucket suffix. Look at the apply output for any bucket name, e.g. `dev-ecommerce-1273046786044266617`. The number at the end is your suffix. Set it as a shell variable:
 ```sh
 SUFFIX=<your-number-here>
 ```
 
 ## Testing
 
-**Step 3** — Create access keys for `dev-user-1`:
+**Step 6** — Create access keys for `dev-user-1`:
 1. Go to **IAM → Users → dev-user-1 → Security credentials → Create access key → CLI**
 2. Copy the Access Key ID and Secret Access Key
 
-**Step 4** — Configure the CLI profile. Run `aws configure --profile dev-user-1` and enter your values at each prompt:
+**Step 7** — Configure the CLI profile:
 ```sh
 aws configure --profile dev-user-1
 ```
 
-**Step 5** — Upload a test file so buckets are not empty. Run each line separately:
+**Step 8** — Upload a test file so buckets are not empty:
 ```sh
 echo "test" > /tmp/test.txt
 ```
@@ -69,7 +89,7 @@ aws --profile sara s3 cp /tmp/test.txt s3://dev-ecommerce-${SUFFIX}/test.txt
 aws --profile sara s3 cp /tmp/test.txt s3://stage-ecommerce-${SUFFIX}/test.txt
 ```
 
-**Step 6** — Run the access tests. Run each line separately:
+**Step 9** — Run the access tests. Run each line separately:
 ```sh
 aws --profile dev-user-1 s3 ls s3://dev-ecommerce-${SUFFIX}
 ```
@@ -102,7 +122,7 @@ Expected: AccessDenied
 
 ## Simulating the 6-Month Date Condition
 
-**Step 7** — To test stage access without waiting until Oct 1, open `variables.tf` and change the date to a past value:
+**Step 10** — To test stage access without waiting until Oct 1, open `variables.tf` and change the date to a past value:
 
 ```hcl
 variable "stage_access_after" {
@@ -112,12 +132,12 @@ variable "stage_access_after" {
 }
 ```
 
-**Step 8** — Re-apply:
+**Step 11** — Re-apply:
 ```sh
 terraform apply -auto-approve
 ```
 
-**Step 9** — Upload a test file to stage and retest. Run each line separately:
+**Step 12** — Retest stage access. Run each line separately:
 ```sh
 aws --profile sara s3 cp /tmp/test.txt s3://stage-ecommerce-${SUFFIX}/test.txt
 ```
@@ -131,10 +151,12 @@ aws --profile dev-user-1 s3 ls s3://stage-neteng-${SUFFIX}
 ```
 Expected: AccessDenied (wrong team tag, never allowed)
 
-**Step 10** — Revert `variables.tf` back to the original date and re-apply:
+**Step 13** — Revert `variables.tf` back to the original date:
 ```hcl
 default = "2026-10-01T00:00:00Z"
 ```
+
+Re-apply:
 ```sh
 terraform apply -auto-approve
 ```
@@ -144,6 +166,9 @@ terraform apply -auto-approve
 To tear down and rebuild everything from scratch:
 ```sh
 terraform destroy
+```
+```sh
+terraform init
 ```
 ```sh
 terraform apply -auto-approve
