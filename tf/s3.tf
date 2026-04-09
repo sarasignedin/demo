@@ -2,11 +2,6 @@ resource "random_id" "random" {
   byte_length = 8
 }
 
-resource "aws_iam_user" "new_dev" {
-  name          = "dev-user-1"
-  force_destroy = true
-}
-
 # dev-ecommerce
 resource "aws_s3_bucket" "dev_ecommerce" {
   bucket = "dev-ecommerce-${random_id.random.dec}"

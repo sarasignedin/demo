@@ -12,6 +12,11 @@ resource "aws_iam_group_membership" "new_dev" {
   group = aws_iam_group.dev_ecommerce.name
 }
 
+resource "aws_iam_user" "new_dev" {
+  name          = "dev-user-1"
+  force_destroy = true
+}
+
 resource "aws_iam_group_policy" "dev_ecommerce" {
   name  = "dev_ecommerce"
   group = aws_iam_group.dev_ecommerce.name
